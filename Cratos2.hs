@@ -36,7 +36,8 @@ runConn (sock, _) chan nr = do
         (nr', line) <- readChan chan'
         when (nr /= nr') $ hPutStrLn hdl line
         loop
-    let alwaysError :: SomeException -> IO (); alwaysError = \_ -> return ()
+    let alwaysError :: SomeException -> IO ()
+    	alwaysError = \_ -> return ()
     handle alwaysError $ fix $ \loop -> do
         line <- liftM init (hGetLine hdl)
         case line of
