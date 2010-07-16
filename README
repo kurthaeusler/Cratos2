@@ -1,0 +1,8 @@
+A decade ago we had an anonymous chat server at work called Cratos. It was a
+lot of fun. This is an attempt to recreate something like that.
+I can't take much credit for this, I copied it mostly from here:
+http://www.haskell.org/haskellwiki/Implement_a_chat_server
+
+I just had to make a small change to make it work with the new exceptions
+introduced in GHC, and I removed the names, greet and part messages etc,
+
