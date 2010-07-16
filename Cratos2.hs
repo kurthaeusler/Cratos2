@@ -31,6 +31,7 @@ runConn (sock, _) chan nr = do
     let broadcast msg = writeChan chan (nr, msg)
     hdl <- socketToHandle sock ReadWriteMode
     hSetBuffering hdl NoBuffering
+    hPutStrLn hdl "Welcome to Cratos2"
     chan' <- dupChan chan
     reader <- forkIO $ fix $ \loop -> do
         (nr', line) <- readChan chan'
