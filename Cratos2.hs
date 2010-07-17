@@ -49,6 +49,7 @@ runConn (sock, _) chan nr = do
         case line of
          "!quit" -> hPutStrLn hdl "Bye!"
          _      -> do
+	    appendFile "log.txt" (line ++ "\n")
             broadcast line
             loop
     killThread reader
