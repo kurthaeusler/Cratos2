@@ -1,4 +1,7 @@
+import Data.Word
+import Network hiding(accept)
 import Network.Socket
+import System.Environment
 import System.IO
 import Control.Exception
 import Control.Concurrent
@@ -10,10 +13,12 @@ type Msg = (Int, String)
  
 main :: IO ()
 main = do
+    [portStr] <- getArgs
+    let port = fromIntegral (read portStr :: Int)
     chan <- newChan
     sock <- socket AF_INET Stream 0
     setSocketOption sock ReuseAddr 1
-    bindSocket sock (SockAddrInet 4242 iNADDR_ANY)
+    bindSocket sock (SockAddrInet port iNADDR_ANY)
     listen sock 2
     forkIO $ fix $ \loop -> do
         (_, msg) <- readChan chan
@@ -42,7 +47,7 @@ runConn (sock, _) chan nr = do
     handle alwaysError $ fix $ \loop -> do
         line <- liftM init (hGetLine hdl)
         case line of
-         "quit" -> hPutStrLn hdl "Bye!"
+         "!quit" -> hPutStrLn hdl "Bye!"
          _      -> do
             broadcast line
             loop
