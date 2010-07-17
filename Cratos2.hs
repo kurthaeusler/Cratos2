@@ -1,3 +1,4 @@
+import Char
 import Data.Word
 import Network hiding(accept)
 import Network.Socket
@@ -46,11 +47,12 @@ runConn (sock, _) chan nr = do
     	alwaysError = \_ -> return ()
     handle alwaysError $ fix $ \loop -> do
         line <- liftM init (hGetLine hdl)
-        case line of
+	let filteredLine = filter isPrint line
+        case filteredLine of
          "!quit" -> hPutStrLn hdl "Bye!"
          _      -> do
-	    appendFile "log.txt" (line ++ "\n")
-            broadcast line
+	    appendFile "log.txt" (filteredLine ++ "\n")
+            broadcast filteredLine
             loop
     killThread reader
     hClose hdl
